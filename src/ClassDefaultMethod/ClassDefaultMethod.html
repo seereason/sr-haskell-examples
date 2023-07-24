@@ -1,0 +1,38 @@
+<p>DSF asks: I think I don’t understand haskell class default methods how is the choice made between invoking a class default method and invoking an instance method?</p>
+<p>There are several relevant Haskell features.</p>
+<p>This sort of default method implementation is available in Haskell98:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ot">{-# language DefaultSignatures #-}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">class</span> <span class="dt">Enum&#39;</span> a <span class="kw">where</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="ot">  enum&#39; ::</span> [a]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  enum&#39; <span class="ot">=</span> []</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Foo</span> <span class="ot">=</span> <span class="dt">Foo</span> <span class="kw">deriving</span> <span class="dt">Show</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">instance</span> <span class="dt">Enum&#39;</span> <span class="dt">Foo</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>  </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Bar</span> <span class="ot">=</span> <span class="dt">Bar</span> <span class="kw">deriving</span> (<span class="dt">Enum</span>, <span class="dt">Show</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">instance</span> <span class="dt">Enum&#39;</span> <span class="dt">Bar</span> <span class="kw">where</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>  enum&#39; <span class="ot">=</span> <span class="fu">enumFrom</span> <span class="dt">Bar</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>  </span></code></pre></div>
+<pre><code>*Main&gt; enum&#39; :: [Foo]
+[]
+*Main&gt; enum&#39; :: [Bar]
+[Bar]</code></pre>
+<p>Sources</p>
+<pre><code>  https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/default_signatures.html</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell literate"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="ot">{-# language DefaultSignatures #-}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">class</span> <span class="dt">GEnum</span> a <span class="kw">where</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="ot">  genum ::</span> [a]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  default<span class="ot"> genum&#39; ::</span> <span class="dt">Enum</span> a <span class="ot">=&gt;</span> [a]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Foo</span> <span class="ot">=</span> <span class="dt">Foo</span> <span class="kw">deriving</span> <span class="dt">Show</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="kw">instance</span> <span class="dt">Enum&#39;</span> <span class="dt">Foo</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="kw">data</span> <span class="dt">Bar</span> <span class="ot">=</span> <span class="dt">Bar</span> <span class="kw">deriving</span> (<span class="dt">Enum</span>, <span class="dt">Show</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="kw">instance</span> <span class="dt">Enum&#39;</span> <span class="dt">Bar</span> <span class="kw">where</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>  enum&#39; <span class="ot">=</span> <span class="fu">enumFrom</span> <span class="dt">Bar</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  </span></code></pre></div>
