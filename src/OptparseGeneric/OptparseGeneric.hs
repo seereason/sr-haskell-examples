@@ -10,10 +10,12 @@
 
 import Options.Generic
 
-data Example w = Example
-    { foo :: w ::: Int <?> "Documentation for the foo flag"  <!> "0"
-    , bar :: w ::: Double <?> "Documentation for the bar flag" <!> "-10.0"
-    }  deriving (Generic)
+data Example w
+  = FooBar { foo :: w ::: Int <?> "Documentation for the foo flag"  <!> "0"
+           , bar :: w ::: Double <?> "Documentation for the bar flag" <!> "-10.0"
+           }
+  | Create String
+  deriving (Generic)
 
 instance ParseRecord (Example Wrapped)
 deriving instance Show (Example Unwrapped)
