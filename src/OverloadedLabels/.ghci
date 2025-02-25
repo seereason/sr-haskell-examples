@@ -1,0 +1,7 @@
+:set -XDataKinds
+:set -XOverloadedLabels
+:set -XTemplateHaskell
+:set -XTypeFamilies
+
+:set -XOverloadedStrings
+
