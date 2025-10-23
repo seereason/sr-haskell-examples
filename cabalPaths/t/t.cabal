@@ -1,4 +1,4 @@
-cabal-version:      3.0
+cabal-version:      3.14
 -- The cabal-version field refers to the version of the .cabal specification,
 -- and can be different from the cabal-install (the tool) version and the
 -- Cabal (the library) version you are using. As such, the Cabal (the library)
@@ -44,6 +44,7 @@ maintainer:         beshers@seereason.com
 -- copyright:
 category:           Testing
 build-type:         Simple
+-- build-type:         Custom
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
 extra-doc-files:    CHANGELOG.md
